@@ -1,3 +1,18 @@
+---
+title: Email Triage OpenEnv
+emoji: 📧
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 7860
+tags:
+  - openenv
+  - email
+  - nlp
+  - real-world
+license: mit
+---
+
 # Email Triage OpenEnv
 
 > A real-world email triage environment compliant with the [OpenEnv](https://openenv.dev) specification.  
