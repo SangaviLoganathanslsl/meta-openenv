@@ -4,7 +4,7 @@ FastAPI app exposing EmailTriageEnv as a REST API for Hugging Face Spaces.
 from __future__ import annotations
 import os
 from typing import Any, Dict, Optional
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Body
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
@@ -49,9 +49,10 @@ def list_tasks():
 
 
 @app.post("/reset")
-def reset(req: ResetRequest):
+def reset(req: Optional[ResetRequest] = Body(default=None)):
+    task_id = req.task_id if req else "spam_classification"
     try:
-        obs = _env.reset(task_id=req.task_id)
+        obs = _env.reset(task_id=task_id)
         return {"observation": obs.model_dump()}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
