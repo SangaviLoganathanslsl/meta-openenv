@@ -1,0 +1,66 @@
+name: email-triage-env
+version: "0.1.0"
+description: >
+  An OpenEnv environment where AI agents must perform real-world email triage:
+  spam classification, priority & category assignment, and professional response drafting.
+  Three tasks of increasing difficulty test an agent's language understanding,
+  reasoning, and communication skills.
+
+author: openenv-hackathon
+tags:
+  - openenv
+  - email
+  - nlp
+  - real-world
+  - classification
+  - generation
+
+entry_point: environment.env:EmailTriageEnv
+
+observation_type: environment.models:Observation
+action_type: environment.models:Action
+reward_type: environment.models:Reward
+
+tasks:
+  - id: spam_classification
+    name: "Email Spam Classification"
+    difficulty: easy
+    num_steps: 5
+    description: >
+      Classify 5 emails as 'spam' or 'not_spam'. Emails include phishing attempts,
+      scams, and legitimate work correspondence.
+
+  - id: email_prioritization
+    name: "Email Prioritization & Categorization"
+    difficulty: medium
+    num_steps: 5
+    description: >
+      Assign each of 5 emails a priority level (high/medium/low) and a category
+      (work/personal/finance/promotion/support/other). Partial credit for adjacent
+      priority levels.
+
+  - id: email_response
+    name: "Professional Email Response Generation"
+    difficulty: hard
+    num_steps: 3
+    description: >
+      Draft professional, empathetic, and complete responses to 3 real-world emails:
+      an angry customer refund demand, an enterprise sales inquiry, and a
+      responsible security disclosure. Graded on keyword coverage, structure,
+      length, and tone.
+
+reward:
+  type: per_step
+  range: [0.0, 1.0]
+  description: >
+    Each step yields a reward in [0.0, 1.0] based on action correctness.
+    Partial credit is awarded for adjacent priority levels and partial keyword coverage.
+    Empty actions receive 0.0 to discourage no-ops.
+
+evaluation:
+  metric: average_step_reward
+  baseline_model: "Qwen/Qwen2.5-7B-Instruct"
+
+huggingface:
+  space_sdk: docker
+  port: 7860
